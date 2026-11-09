@@ -21,7 +21,7 @@ ToDo app:
 ### Namespaces
 
 - `mysql` namespace: only the database (StatefulSet, its headless Service, Secret `mysql-secrets`, ConfigMap with `init.sql`). The MySQL volumes are created by `volumeClaimTemplates` in this namespace: `data-mysql-0`, `data-mysql-1`, `data-mysql-2`.
-- `todoapp` namespace: the application. `db-secret.yml` and `pvc.yml` are in `todoapp` on purpose: a pod can read Secrets and PVCs only from its own namespace, and the Deployment lives in `todoapp`. `pvc-data` is the app's own volume for `/app/data` (from the previous task), it is not used by MySQL.
+- `todoapp` namespace: the application. `db-secret.yml` is in `todoapp` on purpose: a pod can read Secrets only from its own namespace, and the Deployment lives in `todoapp`.
 - The app reaches MySQL across namespaces by the DNS name of the 0 indexed pod: `mysql-0.mysql.mysql.svc.cluster.local` (`<pod>.<headless service>.<namespace>.svc.cluster.local`).
 
 ## 1. Create the cluster
