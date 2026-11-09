@@ -13,7 +13,7 @@ kubectl rollout status statefulset/mysql -n mysql --timeout=600s
 
 # ToDo app
 kubectl apply -f .infrastructure/namespace.yml
-kubectl apply -f .infrastructure/confgiMap.yml
+kubectl apply -f .infrastructure/configMap.yml
 kubectl apply -f .infrastructure/secret.yml
 kubectl apply -f .infrastructure/db-secret.yml
 kubectl apply -f .infrastructure/pv.yml

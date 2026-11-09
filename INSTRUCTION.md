@@ -18,6 +18,12 @@ ToDo app:
 - `.infrastructure/db-secret.yml`: Secret `db-secret` with `NAME`, `USER`, `PASSWORD`, `HOST`. `HOST` points to the 0 indexed pod: `mysql-0.mysql.mysql.svc.cluster.local`.
 - `.infrastructure/deployment.yml`: new image `kkurama/todoapp:5.0.0`, all keys of `db-secret` are passed to the container with `envFrom`.
 
+### Namespaces
+
+- `mysql` namespace: only the database (StatefulSet, its headless Service, Secret `mysql-secrets`, ConfigMap with `init.sql`). The MySQL volumes are created by `volumeClaimTemplates` in this namespace: `data-mysql-0`, `data-mysql-1`, `data-mysql-2`.
+- `todoapp` namespace: the application. `db-secret.yml` and `pvc.yml` are in `todoapp` on purpose: a pod can read Secrets and PVCs only from its own namespace, and the Deployment lives in `todoapp`. `pvc-data` is the app's own volume for `/app/data` (from the previous task), it is not used by MySQL.
+- The app reaches MySQL across namespaces by the DNS name of the 0 indexed pod: `mysql-0.mysql.mysql.svc.cluster.local` (`<pod>.<headless service>.<namespace>.svc.cluster.local`).
+
 ## 1. Create the cluster
 
 ```bash
